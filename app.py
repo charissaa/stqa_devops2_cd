@@ -67,15 +67,16 @@ def update_pet(pet_id):
 
     pet = pets[pet_id]
 
-    #...
-    if 'name' in data:
+    #... Harus pakai "if data.get('field'):"
+    if data.get('name'):
         pet['name'] = data['name']
-    if 'category' in data:
+    if data.get('category'):
         pet['category'] = data['category']
-    if 'gender' in data:
+    if data.get('gender'):
         pet['gender'] = data['gender']
-    if 'birthday' in data:
+    if data.get('birthday'):
         pet['birthday'] = data['birthday']
+
 
     pets[pet_id] = pet
     return jsonify(pet), 200
