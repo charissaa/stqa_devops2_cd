@@ -60,8 +60,11 @@ def update_pet(pet_id):
     if pet_id not in pets:
       return jsonify({"message": f"Pet with ID {pet_id} not found"}), 404
     
-    #tambah "or {}"
-    data = request.get_json() or {}
+    #tambah "(silent=True)"
+    data = request.get_json(silent=True)
+    if not data:
+        data = request.form.to_dict()
+
     pet = pets[pet_id]
 
     #...
