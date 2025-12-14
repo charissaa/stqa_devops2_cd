@@ -40,13 +40,16 @@ def handle_pets():
         response_data.status_code = 201
         return response_data
 
-    if request.method == 'GET':
-        category = request.args.get('category')
-        if category:
-            matching_pets = [pet for pet in pets.values() if pet['category'] == category]
-            return jsonify(matching_pets)
-        
-        return jsonify(list(pets.values()))
+    # GET ...
+    category = request.args.get('category')
+    if category:
+        matching_pets = [
+            pet for pet in pets.values()
+            if pet.get('category', '').lower() == category.lower()
+        ]
+        return jsonify(matching_pets)
+
+    return jsonify(list(pets.values()))
 
 # API endpoint for updating a pet
 @app.route('/pets/<int:pet_id>', methods=['PUT'])
@@ -59,7 +62,17 @@ def update_pet(pet_id):
     
     data = request.get_json()
     pet = pets[pet_id]
-    pet.update(data)
+
+    #...
+    if 'name' in data:
+        pet['name'] = data['name']
+    if 'category' in data:
+        pet['category'] = data['category']
+    if 'gender' in data:
+        pet['gender'] = data['gender']
+    if 'birthday' in data:
+        pet['birthday'] = data['birthday']
+
     pets[pet_id] = pet
     return jsonify(pet), 200
 
